@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
-// 6:36
 
-// const 
 
-const SearchElement = ({onSearchSend}) => {
+const SearchElement = ({onSearchSend,index, onIndex}) => {
     const [string, setString] = useState('');
 
     const setSearchValue = event => {
@@ -12,21 +10,19 @@ const SearchElement = ({onSearchSend}) => {
 
     const keyPress = (e) => {
         if (e.key === 'Enter') {
-            onSearchSend(string)
+            onSearchSend(string);
+            onIndex(index);
         }
     }
 
     return(
-        <div>
-            <div className="input-group mt-3">
-                <input type="text"
-                    className="form-control"
-                    value={string}
-                    onChange={setSearchValue}
-                    onKeyPress={keyPress}
-                />
-            </div>
-        </div>
+        <input type="text"
+            className="form-control mt-2"
+            value={string}
+            index={index}
+            onChange={setSearchValue}
+            onKeyPress={keyPress}
+        />
     )
 }
 

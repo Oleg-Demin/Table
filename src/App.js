@@ -19,7 +19,7 @@ function App() {
       return;
     }
 
-    const copyData = filteredData.concat();
+    const copyData = data.concat();
     if (field === nameField){
       copyData.sort(
         (a, b) => {return a[field] > b[field] ? direction : -direction}
@@ -43,32 +43,15 @@ function App() {
     // console.log(direction)
   }
 
-  const [searchText, setSearchText] = useState('')
 
-  const onSearchSend = (text) => {
-    setSearchText(text);
-  }
-
-  const getFilteredDate = (ind) => {
-    if (!searchText) {
-      return data;
-    } else {
-      return data.filter(
-        el => el[ind].includes(searchText)
-      )
-    }
-  }
-
-  const filteredData = getFilteredDate('name');
 
   return (
     <div className="container-xxl">
         <Table
-          data={filteredData}
+          data={data}
           sortData={sortData}
           direction={direction}
           nameField={nameField}
-          onSearchSend={onSearchSend}
         />
     </div>
   );
