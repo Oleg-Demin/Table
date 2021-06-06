@@ -1,5 +1,11 @@
 [
-    {"id":0, "name":"oleg", "phone": "8 100 111 10 01"},
-    {"id":1, "name":"sergey", "phone": "8 200 222 20 02"},
-    {"id":2, "name":"alex", "phone": "8 300 333 30 03"}
+    {"id":0, "name":"Elisha", "phone": "8 (525) 265 52 04"},
+    {"id":1, "name":"Sergey", "phone": "8 (168) 160 66 88"},
+    {"id":2, "name":"Alex", "phone": "8 (937) 513 59 63"},
+    {"id":3, "name":"Pauline", "phone": "8 (634) 916 07 27"},
+    {"id":4, "name":"Yaroslav", "phone": "8 (714) 308 24 07"},
+    {"id":5, "name":"Vera", "phone": "8 (878) 858 86 88"},
+    {"id":6, "name":"Plato", "phone": "8 (777) 040 57 50"},
+    {"id":7, "name":"Oleg", "phone": "8 (121) 321 50 80"},
+    {"id":8, "name":"Semyon", "phone": "8 (864) 609 48 20"}
 ]
