@@ -22,28 +22,8 @@ const Table = ({data, sortData, direction, nameField}) => {
         }
     }
     
-    var [searchText, setSearchText] = useState('')
-    const [index, setIndex] = useState('')
 
-    const onSearchSend = (text) => {
-        setSearchText(text);
-    }
-
-    const onIndex = (text) => {
-        setIndex(text)
-    }
-    
-    
-    const getFilteredDate = (index) => {
-      if (!searchText) {
-        return data;
-      } else {
-        return data.filter(
-            item => String(item[index]).toLowerCase().includes(searchText.toLowerCase())
-        )
-      }
-    }
-    
+    //Создание поля ввода    
     const [inputIndex, setInputIndex] = useState('');
     const [searchElement, setSearchElement] = useState('');
     
@@ -51,10 +31,10 @@ const Table = ({data, sortData, direction, nameField}) => {
         if (index === inputIndex) {
             setSearchElement('');
             setInputIndex('');
-            //
         } else {
             setSearchElement(<SearchElement onSearchSend={onSearchSend} index={index} onIndex={onIndex}/>);
             setInputIndex(index);
+            setSearchText(''); //обнуляем строку поиска (мы создали новый input, что там было в старом нас не интересует)
         }
     }
 
@@ -64,9 +44,37 @@ const Table = ({data, sortData, direction, nameField}) => {
         }
     }
 
-    const filteredData = getFilteredDate(index); 
+    // console.log(inputIndex)
+    // console.log(indexFiltered)
+    // console.log(inputIndex === indexFiltered)
+    // console.log(searchElement === '')
 
-    // var filteredData = searchElement === '' ? data : getFilteredDate(index);     
+    // Фильтрация значений на основании того, что было записано в input
+    const [searchText, setSearchText] = useState('')
+    const [indexFiltered, setIndexFiltered] = useState('')
+
+    const onSearchSend = (text) => {
+        setSearchText(text);
+    }
+
+    const onIndex = (text) => {
+        setIndexFiltered(text)
+    }
+    
+    
+    const getFilteredDate = (index) => {
+      if (inputIndex !== indexFiltered) {
+        return data;
+      } else {
+        return data.filter(
+            item => String(item[index]).toLowerCase().includes(searchText.toLowerCase())
+        )
+      }
+    }
+
+    const filteredData = getFilteredDate(indexFiltered);
+    
+    // Возврат таблицы
     var i = 1;
     return(
         <div>
@@ -79,7 +87,7 @@ const Table = ({data, sortData, direction, nameField}) => {
                         <th>
                             <div className="stick height">
                                 <div onClick={()=> {sortData('id');}}>ID {caret('id')}</div>
-                                <div className="d-flex justify-content-end">
+                                <div className="d-flex justify-content-end mt-1">
                                     {viewInput('id')}
                                     <button type="button"
                                         className="btn btn-outline-light"
@@ -93,7 +101,7 @@ const Table = ({data, sortData, direction, nameField}) => {
                         <th>
                              <div className="stick height">
                                 <div onClick={()=> {sortData('name');}}>Name {caret('name')}</div>
-                                <div className="d-flex justify-content-end">
+                                <div className="d-flex justify-content-end mt-1">
                                     {viewInput('name')}
                                     <button type="button"
                                         className="btn btn-outline-light"
@@ -107,7 +115,7 @@ const Table = ({data, sortData, direction, nameField}) => {
                         <th>
                               <div className="height">
                                 <div onClick={()=> {sortData('phone');}}>Phone {caret('phone')}</div>
-                                <div className="d-flex justify-content-end">
+                                <div className="d-flex justify-content-end mt-1">
                                     {viewInput('phone')}
                                     <button type="button"
                                         className="btn btn-outline-light"

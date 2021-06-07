@@ -17,7 +17,7 @@ const SearchElement = ({onSearchSend,index, onIndex}) => {
 
     return(
         <input type="text"
-            className="form-control mt-2"
+            className="form-control"
             value={string}
             index={index}
             onChange={setSearchValue}

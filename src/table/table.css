@@ -8,6 +8,13 @@
     /* min-width: 100px; */
 } 
 
+table {
+    background-color: white;
+}
+
+th {
+    max-width: 60px;
+}
 
 button {
     float: right;
