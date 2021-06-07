@@ -50,17 +50,12 @@ const Table = ({data, sortData, direction, nameField}) => {
         }
     }
 
-    // Вывод (показ) полля вода в таблице
+    // Вывод (показ) поля ввода в таблице
     const viewInput = (index) => {
         if (index === indexElement) {
             return searchElement;
         }
     }
-
-    // console.log(inputIndex)
-    // console.log(indexFiltered)
-    // console.log(inputIndex === indexFiltered)
-    // console.log(searchElement === '')
 
     // Фильтрация значений на основании того, что было записано в input    
     const getFilteredDate = (index) => {
