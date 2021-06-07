@@ -74,10 +74,10 @@ const Table = ({data, sortData, direction, nameField}) => {
                 <thead className="table-light">
                     <tr>
                         <th>
-                            <div className="stick" onClick={()=> {sortData('#');}}>#</div>
+                            <div className="stick height" onClick={()=> {sortData('#');}}><span>#</span></div>
                         </th>
                         <th>
-                            <div className="stick">
+                            <div className="stick height">
                                 <div onClick={()=> {sortData('id');}}>ID {caret('id')}</div>
                                 <div className="d-flex justify-content-end">
                                     {viewInput('id')}
@@ -91,7 +91,7 @@ const Table = ({data, sortData, direction, nameField}) => {
                             </div>
                         </th>
                         <th>
-                             <div className="stick">
+                             <div className="stick height">
                                 <div onClick={()=> {sortData('name');}}>Name {caret('name')}</div>
                                 <div className="d-flex justify-content-end">
                                     {viewInput('name')}
@@ -105,7 +105,7 @@ const Table = ({data, sortData, direction, nameField}) => {
                             </div>
                         </th>
                         <th>
-                              <div>
+                              <div className="height">
                                 <div onClick={()=> {sortData('phone');}}>Phone {caret('phone')}</div>
                                 <div className="d-flex justify-content-end">
                                     {viewInput('phone')}

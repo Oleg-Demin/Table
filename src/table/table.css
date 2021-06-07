@@ -1,6 +1,13 @@
 .stick {
     border-right: 2px solid lightgrey;
+    /* display: inline-block; */
 }
+
+.height {
+    height: 70px;
+    /* min-width: 100px; */
+} 
+
 
 button {
     float: right;
