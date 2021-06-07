@@ -3,31 +3,22 @@ import caretUp from '../assets/caret-up-fill.svg';
 import caretLeft from '../assets/caret-left.svg';
 import funnel from '../assets/funnel-fill.svg';
 import SearchElement from '../search/search.js';
-import React, {useState} from 'react';
+import React, { Component } from 'react';
 import './table.css'
 
 
-const Table = ({data, sortData, direction, nameField}) => {
-        
-    const [searchElement, setSearchElement] = useState('');
-    const [indexElement, setIndexElement] = useState('');
-
-    const [searchText, setSearchText] = useState('')
-    const [indexFiltered, setIndexFiltered] = useState('')
-
-    const onSearchText = (text) => {
-        setSearchText(text);
-    }
-
-    const onIndexFiltered = (text) => {
-        setIndexFiltered(text)
+class Table extends Component {
+    state = {
+        searchElement: null,
+        indexElement: '',
+        searchText: '',
+        indexFiltered: ''
     }
 
     // Метод создание стрелки "направления фильтрации"
-    const caret = (index) =>{
-        
-        if (nameField === index){
-            if (direction === -1){
+    caret = (index) =>{
+        if (this.props.nameField === index){
+            if (this.props.direction === -1){
                 return(<img src={caretUp} alt="Up"/>);
             } else {
                 return(<img src={caretDown} alt="Down"/>);
@@ -37,106 +28,139 @@ const Table = ({data, sortData, direction, nameField}) => {
         }
     }
 
-    // Создание поля ввода        
-    const creatingInput = (index) => {
-        if (index === indexElement) {
-            setSearchElement('');
-            setIndexElement('');
-            setSearchText('');
+    // Создание поля ввода
+    setSearchText = searchText => {
+        this.setState({searchText})
+    }
+    
+    setIndexFiltered = indexFiltered => {
+        this.setState({indexFiltered})
+    }
+
+    creatingInput = (index) => {
+        if (index === this.state.indexElement) {
+            this.setState({
+                searchElement: null,
+                indexElement: '',
+                searchText: ''
+            })
         } else {
-            setSearchElement(<SearchElement onSearchText={onSearchText} index={index} onIndexFiltered={onIndexFiltered}/>);
-            setIndexElement(index);
-            setSearchText('');
+            this.setState({
+                searchElement: <SearchElement
+                    setSearchText={this.setSearchText}
+                    index={index}
+                    setIndexFiltered={this.setIndexFiltered}
+                    />,
+                indexElement: index,
+                searchText: ''
+            })
         }
     }
 
-    // Вывод (показ) поля ввода в таблице
-    const viewInput = (index) => {
-        if (index === indexElement) {
-            return searchElement;
+    // Вывод (показ) поля вода в таблице
+    viewInput = (index) => {
+        if (index === this.state.indexElement) {
+            return this.state.searchElement;
         }
     }
 
     // Фильтрация значений на основании того, что было записано в input    
-    const getFilteredDate = (index) => {
-      if (indexElement !== indexFiltered) {
-        return data;
+    getFilteredDate = (index) => {
+      if (this.state.indexElement !== this.state.indexFiltered) {
+        return this.props.data;
       } else {
-        return data.filter(
-            item => String(item[index]).toLowerCase().includes(searchText.toLowerCase())
+        return this.props.data.filter(
+            item => String(item[index]).toLowerCase().includes(this.state.searchText.toLowerCase())
         )
       }
     }
 
-    const filteredData = getFilteredDate(indexFiltered);
-    
-    // Возврат таблицы
-    var i = 1;
-    return(
-        <div>
-            <table className="table mt-3">
-                <thead className="table-light">
-                    <tr>
-                        <th>
-                            <div className="stick height" onClick={()=> {sortData('#');}}><span>#</span></div>
-                        </th>
-                        <th>
-                            <div className="stick height">
-                                <div onClick={()=> {sortData('id');}}>ID {caret('id')}</div>
-                                <div className="d-flex justify-content-end mt-1">
-                                    {viewInput('id')}
-                                    <button type="button"
-                                        className="btn btn-outline-light"
-                                        onClick={() => creatingInput('id')}
-                                        >
-                                        <img src={funnel} alt="funnel"/>
-                                    </button>
+    render() {
+
+        const filteredData = this.getFilteredDate(this.state.indexFiltered);
+        var i = 1;
+        return(
+            <div>
+                <table className="table mt-3">
+                    <thead className="table-light">
+                        <tr>
+                            <th>
+                                <div className="stick height" onClick={()=> {this.props.sortData('#');}}><span>#</span></div>
+                            </th>
+                            <th>
+                                <div className="stick height">
+                                    <div onClick={()=> {this.props.sortData('id');}}>ID {this.caret('id')}</div>
+                                    <div className="d-flex justify-content-end mt-1">
+                                        {this.viewInput('id')}
+                                        <button type="button"
+                                            className="btn btn-outline-light"
+                                            onClick={() => this.creatingInput('id')}
+                                            >
+                                            <img src={funnel} alt="funnel"/>
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
-                        </th>
-                        <th>
-                             <div className="stick height">
-                                <div onClick={()=> {sortData('name');}}>Name {caret('name')}</div>
-                                <div className="d-flex justify-content-end mt-1">
-                                    {viewInput('name')}
-                                    <button type="button"
-                                        className="btn btn-outline-light"
-                                        onClick={() => creatingInput('name')}
-                                        >
-                                        <img src={funnel} alt="funnel"/>
-                                    </button>
+                            </th>
+                            <th>
+                                <div className="stick height">
+                                    <div onClick={()=> {this.props.sortData('name');}}>Name {this.caret('name')}</div>
+                                    <div className="d-flex justify-content-end mt-1">
+                                        {this.viewInput('name')}
+                                        <button type="button"
+                                            className="btn btn-outline-light"
+                                            onClick={() => this.creatingInput('name')}
+                                            >
+                                            <img src={funnel} alt="funnel"/>
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
-                        </th>
-                        <th>
-                              <div className="height">
-                                <div onClick={()=> {sortData('phone');}}>Phone {caret('phone')}</div>
-                                <div className="d-flex justify-content-end mt-1">
-                                    {viewInput('phone')}
-                                    <button type="button"
-                                        className="btn btn-outline-light"
-                                        onClick={() => creatingInput('phone')}
-                                        >
-                                        <img src={funnel} alt="funnel"/>
-                                    </button>
+                            </th>
+                            <th>
+                                <div className="stick height">
+                                    <div onClick={()=> {this.props.sortData('phone');}}>Phone {this.caret('phone')}</div>
+                                    <div className="d-flex justify-content-end mt-1">
+                                        {this.viewInput('phone')}
+                                        <button type="button"
+                                            className="btn btn-outline-light"
+                                            onClick={() => this.creatingInput('phone')}
+                                            >
+                                            <img src={funnel} alt="funnel"/>
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {filteredData.map(item =>(
-                        <tr key={item.id}>
-                            <td className="fw-bold">{i++}</td>
-                            <td>{item.id}</td>
-                            <td>{item.name}</td>
-                            <td>{item.phone}</td>
+                            </th>
+                            <th>
+                                <div className="height">
+                                    <div onClick={()=> {this.props.sortData('date');}}>Date {this.caret('date')}</div>
+                                    <div className="d-flex justify-content-end mt-1">
+                                        {this.viewInput('date')}
+                                        <button type="button"
+                                            className="btn btn-outline-light"
+                                            onClick={() => this.creatingInput('date')}
+                                            >
+                                            <img src={funnel} alt="funnel"/>
+                                        </button>
+                                    </div>
+                                </div>
+                            </th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
-        </div>
-    )
+                    </thead>
+                    <tbody>
+                        {filteredData.map(item =>(
+                            <tr key={item.id}>
+                                <td className="fw-bold">{i++}</td>
+                                <td>{item.id}</td>
+                                <td>{item.name}</td>
+                                <td>{item.phone}</td>
+                                <td>{item.date}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+        )
+    }
 }
+
 
 export default Table;

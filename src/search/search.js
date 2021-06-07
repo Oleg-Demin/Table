@@ -1,29 +1,32 @@
-import React, { useState } from 'react';
+import React, { Component } from 'react';
 
 
-const SearchElement = ({onSearchText,index, onIndexFiltered}) => {
-    const [string, setString] = useState('');
+class SearchElement extends Component {
+    state = {string: ''}
 
-    const setSearchValue = event => {
-        setString(event.target.value);
+    setSearchValue = event => {
+        this.setState({string: event.target.value});
     }
 
-    const keyPress = (e) => {
+    keyPress = (e) => {
         if (e.key === 'Enter') {
-            onSearchText(string);
-            onIndexFiltered(index);
+            this.props.setSearchText(this.state.string);
+            this.props.setIndexFiltered(this.props.index);
         }
     }
 
-    return(
-        <input type="text"
+    render() {
+        return(
+            <input type="text"
             className="form-control"
-            value={string}
-            index={index}
-            onChange={setSearchValue}
-            onKeyPress={keyPress}
-        />
-    )
+            value={this.state.string}
+            index={this.props.index}
+            onChange={this.setSearchValue}
+            onKeyPress={this.keyPress}
+            />
+        )
+    }
 }
+
 
 export default SearchElement;

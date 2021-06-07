@@ -1,55 +1,64 @@
-import React, {useState} from 'react';
+import React, {Component} from 'react';
 import Table from './table/table.js';
+import dataJson from './data/data.json'
 
 
-function App() {
+class App extends Component {
   
-  const jsonData = require('./data/data.json');
-  const [data, setData] = useState(jsonData);
+  state = {
+    data: dataJson,
+    direction: 1,
+    nameField: ''
+  }
 
-  const [direction, setDirection] = useState(1); //asc
-  const [nameField, setNameField] = useState('');
-
-  // Сортировка данных
-  const sortData = (field) => {
+  sortData = (field) => {
+    const copyData = this.state.data.concat();
+    const copyDirection = this.state.direction;
+    const nameField = this.state.nameField;
 
     if (field === '#'){
-      setData(jsonData);
-      setNameField(field)
-      setDirection(1) //asc
+      this.setState({
+        data: dataJson,
+        direction: 1,
+        nameField: field
+      })
       return;
     }
 
-    const copyData = data.concat();
     if (field === nameField){
       copyData.sort(
-        (a, b) => {return a[field] > b[field] ? direction : -direction}
+        (a, b) => {return a[field] > b[field] ? copyDirection : -copyDirection}
       )
-      
-      setDirection(-direction);
+      this.setState({
+        data: copyData,
+        direction: -copyDirection,
+        nameField: field
+      })
     } else {
       copyData.sort(
         (a, b) => {return a[field] > b[field] ? 1 : -1}
       )
-      
-      setDirection(-1);
+      this.setState({
+        data: copyData,
+        direction: -1,
+        nameField: field
+      })
     }
-
-    setData(copyData);
-    setNameField(field)
+  } 
+  
+  render() {
+    return (
+      <div className="container-xxl">
+          <Table
+            data={this.state.data}
+            sortData={this.sortData}
+            direction={this.state.direction}
+            nameField={this.state.nameField}
+          />
+      </div>
+    );
   }
-
-
-  return (
-    <div className="container-xxl">
-        <Table
-          data={data}
-          sortData={sortData}
-          direction={direction}
-          nameField={nameField}
-        />
-    </div>
-  );
 }
+
 
 export default App;
