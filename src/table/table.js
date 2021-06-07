@@ -8,7 +8,22 @@ import './table.css'
 
 
 const Table = ({data, sortData, direction, nameField}) => {
-    
+        
+    const [searchElement, setSearchElement] = useState('');
+    const [indexElement, setIndexElement] = useState('');
+
+    const [searchText, setSearchText] = useState('')
+    const [indexFiltered, setIndexFiltered] = useState('')
+
+    const onSearchText = (text) => {
+        setSearchText(text);
+    }
+
+    const onIndexFiltered = (text) => {
+        setIndexFiltered(text)
+    }
+
+    // Метод создание стрелки "направления фильтрации"
     const caret = (index) =>{
         
         if (nameField === index){
@@ -21,25 +36,23 @@ const Table = ({data, sortData, direction, nameField}) => {
             return(<img src={caretLeft} alt="Left"/>);
         }
     }
-    
 
-    //Создание поля ввода    
-    const [inputIndex, setInputIndex] = useState('');
-    const [searchElement, setSearchElement] = useState('');
-    
+    // Создание поля ввода        
     const creatingInput = (index) => {
-        if (index === inputIndex) {
+        if (index === indexElement) {
             setSearchElement('');
-            setInputIndex('');
+            setIndexElement('');
+            setSearchText('');
         } else {
-            setSearchElement(<SearchElement onSearchSend={onSearchSend} index={index} onIndex={onIndex}/>);
-            setInputIndex(index);
-            setSearchText(''); //обнуляем строку поиска (мы создали новый input, что там было в старом нас не интересует)
+            setSearchElement(<SearchElement onSearchText={onSearchText} index={index} onIndexFiltered={onIndexFiltered}/>);
+            setIndexElement(index);
+            setSearchText('');
         }
     }
 
+    // Вывод (показ) полля вода в таблице
     const viewInput = (index) => {
-        if (index === inputIndex) {
+        if (index === indexElement) {
             return searchElement;
         }
     }
@@ -49,21 +62,9 @@ const Table = ({data, sortData, direction, nameField}) => {
     // console.log(inputIndex === indexFiltered)
     // console.log(searchElement === '')
 
-    // Фильтрация значений на основании того, что было записано в input
-    const [searchText, setSearchText] = useState('')
-    const [indexFiltered, setIndexFiltered] = useState('')
-
-    const onSearchSend = (text) => {
-        setSearchText(text);
-    }
-
-    const onIndex = (text) => {
-        setIndexFiltered(text)
-    }
-    
-    
+    // Фильтрация значений на основании того, что было записано в input    
     const getFilteredDate = (index) => {
-      if (inputIndex !== indexFiltered) {
+      if (indexElement !== indexFiltered) {
         return data;
       } else {
         return data.filter(

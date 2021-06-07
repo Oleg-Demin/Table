@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 
-const SearchElement = ({onSearchSend,index, onIndex}) => {
+const SearchElement = ({onSearchText,index, onIndexFiltered}) => {
     const [string, setString] = useState('');
 
     const setSearchValue = event => {
@@ -10,8 +10,8 @@ const SearchElement = ({onSearchSend,index, onIndex}) => {
 
     const keyPress = (e) => {
         if (e.key === 'Enter') {
-            onSearchSend(string);
-            onIndex(index);
+            onSearchText(string);
+            onIndexFiltered(index);
         }
     }
 

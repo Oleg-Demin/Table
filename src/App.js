@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import Table from './table/table.js';
-// 6:36
+
 
 function App() {
   
@@ -10,6 +10,7 @@ function App() {
   const [direction, setDirection] = useState(1); //asc
   const [nameField, setNameField] = useState('');
 
+  // Сортировка данных
   const sortData = (field) => {
 
     if (field === '#'){
@@ -36,13 +37,7 @@ function App() {
 
     setData(copyData);
     setNameField(field)
-
-    // console.log(nameField === field)
-    // console.table(copyData);
-    // console.log(field);
-    // console.log(direction)
   }
-
 
 
   return (
