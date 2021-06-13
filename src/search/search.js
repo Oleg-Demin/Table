@@ -2,16 +2,16 @@ import React, { Component } from 'react';
 
 
 class SearchElement extends Component {
-    state = {string: ''}
+    state = {searchText: ''}
 
     setSearchValue = event => {
-        this.setState({string: event.target.value});
+        this.setState({searchText: event.target.value});
     }
 
     keyPress = (e) => {
         if (e.key === 'Enter') {
-            this.props.setSearchText(this.state.string);
-            this.props.setIndexFiltered(this.props.index);
+            this.props.setSearchText(this.state.searchText);
+            this.props.setIndexFiltered(this.props.indexFiltered);
         }
     }
 
@@ -19,8 +19,6 @@ class SearchElement extends Component {
         return(
             <input type="text"
             className="form-control"
-            value={this.state.string}
-            index={this.props.index}
             onChange={this.setSearchValue}
             onKeyPress={this.keyPress}
             />

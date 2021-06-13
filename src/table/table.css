@@ -19,3 +19,10 @@ th {
 button {
     float: right;
 }
+
+input,
+.btn-light:focus,
+.btn-light:active{
+    box-shadow:none !important;
+    outline:0px !important;
+}
