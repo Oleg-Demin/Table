@@ -1,22 +1,16 @@
-.stick {
-    border-right: 2px solid lightgrey;
-    /* display: inline-block; */
-}
-
-.height {
-    height: 70px;
-    /* min-width: 100px; */
-} 
-
 table {
     background-color: white;
 }
 
 th {
-    max-width: 60px;
+    max-width: 100px;
 }
 
-button {
+th:not(:last-child) .stick{
+    border-right: 2px solid lightgrey;
+}
+
+th button {
     float: right;
 }
 
@@ -25,4 +19,12 @@ input,
 .btn-light:active{
     box-shadow:none !important;
     outline:0px !important;
+}
+
+.nowrap {
+    white-space: nowrap;
+}
+
+.height {
+    height: 70px;
 }

@@ -77,8 +77,10 @@ class Table extends Component {
         return(
             <div className="stick height">
                 <div onClick={()=> {this.props.sortData(index);}}>
-                    {name}
-                    {this.caret(index)}
+                    <span className="nowrap">
+                        {name}
+                        {this.caret(index)}
+                    </span>
                 </div>
                 <div className="d-flex justify-content-end mt-1">
                     {this.viewInput(index)}
@@ -98,7 +100,7 @@ class Table extends Component {
 
         var i = 1;
         return(
-            <div>
+            <div class="table-responsive">
                 <table className="table mt-3">
                     <thead className="table-light">
                         <tr>
