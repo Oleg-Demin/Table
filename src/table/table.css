@@ -2,10 +2,6 @@
     background-color: white;
 }
 
-/* .stick {
-    padding-right: 10px;
-} */
-
 th:not(:last-child) .stick {
     border-right: 2px solid lightgrey;
 }
