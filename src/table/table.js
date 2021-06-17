@@ -76,18 +76,17 @@ class Table extends Component {
     createColumnHeader  = (index, name) => {
         return(
             <div className="stick height">
-                <div onClick={()=> {this.props.sortData(index);}}>
-                    <span className="nowrap">
+                <div className="nowrap pe-2" onClick={()=> {this.props.sortData(index)}}>
                         {name}
                         {this.caret(index)}
-                    </span>
                 </div>
                 <div className="d-flex justify-content-end mt-1">
                     {this.viewInput(index)}
-                    <button type="button"
+                    <button
+                        type="button"
                         className="btn btn-light"
                         onClick={() => this.createInput(index)}
-                        >
+                    >
                         <img src={funnel} alt="funnel"/>
                     </button>
                 </div>
@@ -100,18 +99,24 @@ class Table extends Component {
 
         var i = 1;
         return(
-            <div class="table-responsive">
-                <table className="table mt-3">
+            <div className="table-responsive mt-3">
+                <table className="table">
                     <thead className="table-light">
                         <tr>
                             <th>
-                                <div className="stick height" onClick={()=> {this.props.sortData('#');}}>#</div>
+                                <div className="stick height pe-2" onClick={()=> {this.props.sortData('#');}}>#</div>
                             </th>
                             <th>
                                 {this.createColumnHeader('id', 'ID')}
                             </th>
                             <th>
+                                {this.createColumnHeader('surname', 'Surname')}
+                            </th>
+                            <th>
                                 {this.createColumnHeader('name', 'Name')}
+                            </th>
+                            <th>
+                                {this.createColumnHeader('patronymic', 'Patronymic')}
                             </th>
                             <th>
                                 {this.createColumnHeader('phone', 'Phone')}
@@ -126,7 +131,9 @@ class Table extends Component {
                             <tr key={item.id}>
                                 <td className="fw-bold">{i++}</td>
                                 <td>{item.id}</td>
+                                <td>{item.surname}</td>
                                 <td>{item.name}</td>
+                                <td>{item.patronymic}</td>
                                 <td>{item.phone}</td>
                                 <td>{item.date}</td>
                             </tr>

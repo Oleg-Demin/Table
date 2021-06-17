@@ -1,12 +1,12 @@
-table {
+.table-responsive {
     background-color: white;
 }
 
-th {
-    max-width: 100px;
-}
+/* .stick {
+    padding-right: 10px;
+} */
 
-th:not(:last-child) .stick{
+th:not(:last-child) .stick {
     border-right: 2px solid lightgrey;
 }
 
@@ -14,9 +14,13 @@ th button {
     float: right;
 }
 
+input {
+    min-width: 80px;
+}
+
 input,
 .btn-light:focus,
-.btn-light:active{
+.btn-light:active {
     box-shadow:none !important;
     outline:0px !important;
 }
