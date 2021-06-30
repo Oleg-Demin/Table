@@ -15,8 +15,8 @@ input {
 }
 
 input,
-.btn-light:focus,
-.btn-light:active {
+.btn:focus,
+.btn:active {
     box-shadow:none !important;
     outline:0px !important;
 }
