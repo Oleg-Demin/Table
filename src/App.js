@@ -43,7 +43,6 @@ class App extends Component {
             <Table
               data = {dataJson}
               columns = {tableColumns1}
-              theadColor = "#e09eff"
             />
           </div>
         </div>
@@ -53,14 +52,12 @@ class App extends Component {
             <Table
               data = {dataJson}
               columns = {tableColumns2}
-              theadColor ="#9effc2"
             />
           </div>
           <div className="col-8">
             <Table
               data = {dataJson}
               columns = {tableColumns3}
-              theadColor = "#ffe09e"
             />
           </div>
         </div>
