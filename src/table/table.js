@@ -7,27 +7,27 @@ import './table.css';
 
 
 class Table extends Component {
-    
+
     state = {
-        inputField: null,
-        inputFieldIndex: '',
-
-        filterString: '',
-
         sortDirection: 1,
         indexSort: '',
 
-        data: this.props.data
+        data: this.props.data.concat(),
+        dataKeys: Object.keys(this.props.data[0]),
+
+        inputObjects: new Map(),
+        inputContent: new Map(),
     }
+
 
     //Сортировка данных
     sortData = (index) => {
 
-        const copyData = this.props.data.concat();
+        const copyData = this.state.data.concat();
 
         if (index === '#') {
             this.setState({
-                data: this.props.data,
+                data: this.state.data,
                 sortDirection: 1,
                 indexSort: index
             })
@@ -36,7 +36,7 @@ class Table extends Component {
 
         if (index === this.state.indexSort) {
             copyData.sort(
-                (a, b) => { return a[index] > b[index] ? this.state.sortDirection : -this.state.sortDirection}
+                (a, b) => { return a[index] > b[index] ? this.state.sortDirection : -this.state.sortDirection }
             )
             this.setState({
                 data: copyData,
@@ -57,14 +57,18 @@ class Table extends Component {
     }
 
     // Фильтрация данных    
-    filteredData = (inputFieldIndex, filterString) => {
-        return this.state.data.filter(
-            item => String(item[inputFieldIndex]).toLowerCase().includes(filterString.toLowerCase())
-        )
+    filteredData = (linesContent) => {
+        let copyData = this.props.data.concat()
+        for (let key of linesContent.keys()) {
+            copyData = copyData.filter(
+                item => String(item[key]).toLowerCase().includes(linesContent.get(key).toLowerCase())
+            )
+        }
+        this.setState({ data: copyData })
     }
 
     // вывод шапки таблицы
-    getHead = (columns) => {
+    getHead = (keys) => {
 
         // Создание стрелки "направления фильтрации"
         const showSortArrows = (index) => {
@@ -81,40 +85,34 @@ class Table extends Component {
 
         // Создание поля ввода
         const createInput = (index) => {
-            let contentInput = ""
 
-            if (index === this.state.inputFieldIndex) {
-                this.setState({
-                    inputField: null,
-                    inputFieldIndex: '',
-                    filterString: ''
-                })
+            const input = <input
+                type="text"
+                className="form-control"
+                onChange={(event) => {
+                    this.state.inputContent.set(index, event.target.value) //
+                }}
+                onKeyPress={(event) => {
+                    if (event.key === 'Enter') {
+                        this.filteredData(this.state.inputContent)
+                    }
+                }}
+            />
+
+            if (this.state.inputObjects.has(index)) {
+                this.setState({/* Код работает корректно только при наличии пустого setState (магия) */ });
+                this.state.inputObjects.delete(index);
+                this.state.inputContent.delete(index);
+                this.filteredData(this.state.inputContent)
             } else {
-                this.setState({
-                    inputField:
-                        <input
-                            type="text"
-                            className="form-control"
-                            onChange={(event) => {
-                                contentInput = event.target.value;
-                            }}
-                            onKeyPress={(event) => {
-                                if (event.key === 'Enter') {
-                                    this.setState({ filterString: contentInput });
-                                }
-                            }}
-                        />,
-                    inputFieldIndex: index,
-                    filterString: ''
-                })
+                this.setState({/* Код работает корректно только при наличии пустого setState (магия) */ });
+                this.state.inputObjects.set(index, input);
             }
         }
 
         // Показ поля ввода в таблице
         const showInput = (index) => {
-            if (index === this.state.inputFieldIndex) {
-                return this.state.inputField;
-            }
+            return this.state.inputObjects.get(index)
         }
 
         // Возвращение шапки таблицы
@@ -125,19 +123,19 @@ class Table extends Component {
                     <div className="stick height pe-2" onClick={() => { this.sortData('#'); }}>#</div>
                 </th>
 
-                {columns.map(item => (
-                    <th key={item.index}>
+                {keys.map(item => (
+                    <th key={item}>
                         <div className="stick height">
-                            <div className="nowrap pe-2" onClick={() => { this.sortData(item.index) }}>
-                                {item.name}
-                                {showSortArrows(item.index)}
+                            <div className="nowrap pe-2" onClick={() => { this.sortData(item) }}>
+                                {item[0].toUpperCase() + item.substr(1).toLowerCase()}
+                                {showSortArrows(item)}
                             </div>
                             <div className="d-flex justify-content-end mt-1">
-                                {showInput(item.index)}
+                                {showInput(item)}
                                 <button
                                     type="button"
                                     className="btn"
-                                    onClick={() => createInput(item.index)}
+                                    onClick={() => createInput(item)}
                                 >
                                     <img src={funnel} alt="funnel" />
                                 </button>
@@ -150,48 +148,37 @@ class Table extends Component {
         )
     }
 
-    // Вывод контента таблицы (НАДО ЗАМЕНИТЬ ВСЕ НАИМЕНОВАНИЯ)
-    getContent = (data, columnIndices) => {
+    // Вывод контента таблицы
+    getContent = (data, keys) => {
         let content = [];
-        let a = 1;
-        // let key = 0;
+        let number = 1;
 
         for (let i = 0; i < data.length; i++) {
-            let line = [<td className="fw-bold" key={"#" + i.toString()}>{++a}</td>];
-            // console.log("#" + i.toString())
+            let line = [<td className="fw-bold" key={"#" + i.toString()}>{number++}</td>];
             const tableRow = data[i];
-            for (let j = 0; j < columnIndices.length; j++) {
-                const elementIndex = columnIndices[j];
+            for (let j = 0; j < keys.length; j++) {
+                const elementIndex = keys[j];
                 line.push(<td key={elementIndex.toString() + i.toString()}>{tableRow[elementIndex]}</td>)
-                // console.log(elementIndex.toString() + i.toString())
             }
             content.push(<tr key={"line" + i.toString()}>{line}</tr>)
-            // console.log("line" + i.toString())
         }
 
         return content;
     };
 
     render() {
-
-        const finishData = this.filteredData(this.state.inputFieldIndex, this.state.filterString)
-
-        const columnIndices = [];
-        this.props.columns.map(item => (columnIndices.push(item.index)))
-
         return (
             <div className="table-responsive mt-3">
                 <table className="table">
                     <thead className="table-light">
-                        {this.getHead(this.props.columns)}
+                        {this.getHead(this.state.dataKeys)}
                     </thead>
                     <tbody>
-                        {this.getContent(finishData, columnIndices)}
+                        {this.getContent(this.state.data, this.state.dataKeys)}
                     </tbody>
                 </table>
             </div>
         )
-        
     }
 }
 

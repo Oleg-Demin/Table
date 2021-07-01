@@ -1,39 +1,28 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import Table from './table/table.js';
-import dataJson from './data/data.json'
+import dataJson from './data/data.json';
 
 
 class App extends Component {
-  
+
   render() {
 
-    // Необходимо чтобы индексы были уникальными (поэтому нет необходимости в id)
-    const tableColumns1 = [
-      { index: "id", name: "Id"},
-      { index: "surname", name: "Фамилия"},
-      { index: "name", name: "Имя"},
-      { index: "patronymic", name: "Отчество"},
-      { index: "phone", name: "Телефон"},
-      { index: "date", name: "Дата"},
-    ]
+    const splitDate = dataJson.map(item => {
+      const dateAndTime = item.date.split(' ')
+      return {
+        phone: item.phone,
+        date: dateAndTime[0],
+        time: dateAndTime[1]
+      };
+    });
 
-    const tableColumns2 = [
-      // { index: "id", name: "Id"},
-      { index: "name", name: "Имя"},
-      { index: "surname", name: "Фамилия"},
-      // { index: "patronymic", name: "Отчество"},
-      // { index: "phone", name: "Телефон"},
-      // { index: "date", name: "Дата"},
-    ]
-
-    const tableColumns3 = [
-      // { index: "id", name: "Id"},
-      // { index: "surname", name: "Фамилия"},
-      // { index: "name", name: "Имя"},
-      // { index: "patronymic", name: "Отчество"},
-      { index: "phone", name: "Телефон"},
-      { index: "date", name: "Дата"},
-    ]
+    const joinFullName = dataJson.map(item => {
+      return {
+        fullName: [item.surname, item.name, item.patronymic].join(" "),
+        phone: item.phone,
+        date: item.date
+      };
+    });
 
     return (
       <div className="container-xxl">
@@ -41,8 +30,7 @@ class App extends Component {
         <div className="row">
           <div className="col">
             <Table
-              data = {dataJson}
-              columns = {tableColumns1}
+              data={dataJson}
             />
           </div>
         </div>
@@ -50,14 +38,12 @@ class App extends Component {
         <div className="row">
           <div className="col-4">
             <Table
-              data = {dataJson}
-              columns = {tableColumns2}
+              data={splitDate}
             />
           </div>
           <div className="col-8">
             <Table
-              data = {dataJson}
-              columns = {tableColumns3}
+              data={joinFullName}
             />
           </div>
         </div>
