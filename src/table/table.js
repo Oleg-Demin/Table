@@ -26,8 +26,8 @@ class Table extends Component {
         const copyData = this.state.data.concat();
 
         if (index === '#') {
+            this.filteredData(this.state.inputContent)
             this.setState({
-                data: this.state.data,
                 sortDirection: 1,
                 indexSort: index
             })

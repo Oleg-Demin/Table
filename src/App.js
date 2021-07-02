@@ -36,12 +36,12 @@ class App extends Component {
         </div>
 
         <div className="row">
-          <div className="col-4">
+          <div className="col-5">
             <Table
               data={splitDate}
             />
           </div>
-          <div className="col-8">
+          <div className="col-7">
             <Table
               data={joinFullName}
             />
